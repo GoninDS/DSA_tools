@@ -43,6 +43,13 @@ def merge(array, p, q, r):
     print_merge(array)
 
 
+def print_values_return(p, r, depth):
+    print('Mergesort called with:')
+    print('p: ' + str(p))
+    print('r: ' + str(r))
+    print('q: NA')
+    print('depth:' + str(depth))
+
 def print_values(p, r, q, depth):
     print('Mergesort called with:')
     print('p: ' + str(p))
@@ -57,6 +64,7 @@ def print_values(p, r, q, depth):
 
 def mergesort(array, p, r, depth):
     if (p >= r):
+        print_values_return(p, r, depth)
         return None
     
     q = (p + r) // 2
