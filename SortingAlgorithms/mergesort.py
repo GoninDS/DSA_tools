@@ -45,16 +45,17 @@ def merge(array, p, q, r):
 
 def print_values_return(p, r, depth):
     print('Mergesort called with:')
-    print('p: ' + str(p))
-    print('r: ' + str(r))
+    print('p: ' + str(p + 1))
+    print('r: ' + str(r + 1))
     print('q: NA')
     print('depth:' + str(depth))
+    print('\n')
 
 def print_values(p, r, q, depth):
     print('Mergesort called with:')
-    print('p: ' + str(p))
-    print('r: ' + str(r))
-    print('q: ' + str(q))
+    print('p: ' + str(p + 1))
+    print('r: ' + str(r + 1))
+    print('q: ' + str(q + 1))
     print('depth:' + str(depth))
 
     for i in range(n):
