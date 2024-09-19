@@ -1,3 +1,9 @@
+def print_merge(array):
+    print('Result after merge')
+    for l in range(n):
+        print(array[l], end=" ")
+    print('\n')
+
 def merge(array, p, q, r):
     nl = q - p + 1
     nr = r - q
@@ -34,6 +40,8 @@ def merge(array, p, q, r):
         j += 1
         k += 1
 
+    print_merge(array)
+
 
 def print_values(p, r, q, depth):
     print('Mergesort called with:')
@@ -41,6 +49,11 @@ def print_values(p, r, q, depth):
     print('r: ' + str(r))
     print('q: ' + str(q))
     print('depth:' + str(depth))
+
+    for i in range(n):
+        print(array[i], end=" ")
+
+    print('\n')
 
 def mergesort(array, p, r, depth):
     if (p >= r):
@@ -55,13 +68,16 @@ def mergesort(array, p, r, depth):
     merge(array, p, q, r)
 
 
-arr = [12, 11, 13, 5, 6, 7]
-n = len(arr)
-print("Given array is")
+array = ['G', 'V', 'A', 'N', 'R', 'O', 'P', 'U']
+n = len(array)
+print("Without sorting")
+
 for i in range(n):
-    print("%d" % arr[i],end=" ")
- 
-mergesort(arr, 0, n-1, 1)
-print("\n\nSorted array is")
+    print(array[i], end=" ")
+print('\n')
+
+mergesort(array, 0, n-1, 1)
+
+print("Sorted")
 for i in range(n):
-    print("%d" % arr[i],end=" ")
+    print(array[i], end=" ")
