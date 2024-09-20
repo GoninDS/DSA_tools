@@ -8,69 +8,49 @@
 /**
  * @brief Genera un arreglo de números aleatorios.
  *
- * @param arr Puntero al arreglo de enteros que se va a llenar con números aleatorios.
- * @param n Tamaño del arreglo.
+ * @param arreglo una referencia al vector de enteros que se va a llenar con números aleatorios.
  * @param min Valor mínimo del rango de números aleatorios.
  * @param max Valor máximo del rango de números aleatorios.
  */
-void generarNumerosAleatorios(int *arr, int n, int min, int max) {
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    std::uniform_int_distribution<> dis(min, max);
-
-    for (int i = 0; i < n; ++i) {
-        arr[i] = dis(gen);
-    }
+void generarNumerosAleatorios(std::vector<int>& arreglo, int min, int max) {
+    std::random_device randomDevice;
+    std::mt19937 generator(randomDevice());
+    std::uniform_int_distribution<> distribution(min, max);
+    auto n = arreglo.size(); 
+    for (auto i = 0; i < n; i++)
+        arreglo[i] = distribution(generator);
 }
-
-/**
- * @brief Verifica si un arreglo está ordenado.
- *
- * @param arr Puntero al arreglo de enteros que se va a verificar.
- * @param n Tamaño del arreglo.
- * @return true si el arreglo está ordenado, false en caso contrario.
- */
-bool estaOrdenado(int *arr, int n) {
-    return std::is_sorted(arr, arr + n);
-}
-
 
 /**
  * @brief prueba si el ordenamiento es correcto.
  *
- * Esta función toma un objeto Ordenador, un arreglo de enteros, su tamaño, 
- * un puntero a una función de ordenamiento miembro de Ordenador, y el nombre del método de ordenamiento.
- * Realiza una copia del arreglo, ejecuta el método de ordenamiento y mide el tiempo de ejecución.
- * Luego verifica si el arreglo está ordenado correctamente.
- *
  * @param ordenador Referencia al objeto Ordenador que contiene el método de ordenamiento.
- * @param arreglo Puntero al arreglo de enteros que se va a ordenar.
- * @param tamano Tamaño del arreglo.
+ * @param arreglo referencia constante al vector de enteros al cual se le genera una copia y se ordena la copia.
  * @param funcionOrdenamiento Puntero a la función de ordenamiento miembro de Ordenador.
  * @param nombreMetodo Nombre del método de ordenamiento, usado para imprimir mensajes.
  */
-void probarOrdenamiento(Ordenador& ordenador, int* arreglo, int tamano, 
-                        void (Ordenador::*funcionOrdenamiento)(int*, int) const, const std::string& nombreMetodo) {
-    int* copia = nullptr;
+void probarOrdenamiento(const Ordenador& ordenador, 
+                        const std::vector<int>& arreglo,
+                        void (Ordenador::*funcionOrdenamiento)(int*, int) const, 
+                        const std::string& nombreMetodo) {
+    std::vector<int> copia(arreglo.begin(), arreglo.end());
+    int tamano = arreglo.size();
     try {
-        copia = new int[tamano];
-        std::copy(arreglo, arreglo + tamano, copia);
 
         auto inicio = std::chrono::high_resolution_clock::now();
-        (ordenador.*funcionOrdenamiento)(copia, tamano); 
+        (ordenador.*funcionOrdenamiento)(copia.data(), tamano); 
         auto fin = std::chrono::high_resolution_clock::now();
 
-        if (!estaOrdenado(copia, tamano)) {
-            std::cout << "Error: El " << nombreMetodo << " falló." << std::endl;
-            std::cout << ordenador.datosDeTarea() << std::endl;
-        } else {
-            std::chrono::duration<double> duracion = fin - inicio;
-            std::cout << "Tiempo de " << nombreMetodo << ": " << duracion.count() << " segundos" << std::endl;
-        }
-        delete[] copia;
+        if (!std::is_sorted(copia.begin(),copia.end())) {
+            std::cerr << "Error: El " << nombreMetodo << " falló." << std::endl;
+            std::cerr << ordenador.datosDeTarea() << std::endl;
+        } 
+
+        std::chrono::duration<double> duracion = fin - inicio;
+        std::cout << "Tiempo de " << nombreMetodo << ": " << duracion.count() << " segundos" << std::endl;
+    
     } catch (const std::exception& e) {
-        std::cout << "Error en " << nombreMetodo << ": " << e.what() << std::endl;
-        delete[] copia;
+        std::cerr << "Error en " << nombreMetodo << ": " << e.what() << std::endl;
     }
 }
 
@@ -85,54 +65,53 @@ void probarOrdenamiento(Ordenador& ordenador, int* arreglo, int tamano,
  * @param funcionOrdenamiento Puntero a la función de ordenamiento miembro de Ordenador.
  * @param nombreMetodo Nombre del método de ordenamiento, usado para imprimir mensajes.
  */
-void probarProgramacionDefensiva(Ordenador& ordenador, void (Ordenador::*funcionOrdenamiento)(int*, int) const, const std::string& nombreMetodo) {
+void probarProgramacionDefensiva(const Ordenador& ordenador, void (Ordenador::*funcionOrdenamiento)(int*, int) const, const std::string& nombreMetodo) {
     try {
         int arreglo[] = {0,0,0};
         int tamano = 3;
         try { // Prueba con n inválido (negativo)
             (ordenador.*funcionOrdenamiento)(arreglo, -5);
         } catch (const std::exception& e) {
-            std::cout << "Error en " << nombreMetodo << " (n inválido): " << e.what() << std::endl;
-            std::cout << ordenador.datosDeTarea() << std::endl;
+            std::cerr << "Error en " << nombreMetodo << " (n inválido): " << e.what() << std::endl;
+            std::cerr << ordenador.datosDeTarea() << std::endl;
         }
 
         try { // Prueba con arreglo nulo
             (ordenador.*funcionOrdenamiento)(nullptr, tamano);
         } catch (const std::exception& e) {
-            std::cout << "Error en " << nombreMetodo << " (arreglo nulo): " << e.what() << std::endl;
-            std::cout << ordenador.datosDeTarea() << std::endl;
+            std::cerr << "Error en " << nombreMetodo << " (arreglo nulo): " << e.what() << std::endl;
+            std::cerr << ordenador.datosDeTarea() << std::endl;
         }
 
         try { // Prueba con tamaño cero
             (ordenador.*funcionOrdenamiento)(arreglo, 0);
         } catch (const std::exception& e) {
-            std::cout << "Error en " << nombreMetodo << " (tamaño cero): " << e.what() << std::endl;
-            std::cout << ordenador.datosDeTarea() << std::endl;
+            std::cerr << "Error en " << nombreMetodo << " (tamaño cero): " << e.what() << std::endl;
+            std::cerr << ordenador.datosDeTarea() << std::endl;
         }
 
     } catch (const std::exception& e) { // otra excepción inesperada
-        std::cout << "Error inesperado en pruebas defensivas de " << nombreMetodo << ": " << e.what() << std::endl;
+        std::cerr << "Error inesperado en pruebas defensivas de " << nombreMetodo << ": " << e.what() << std::endl;
     }
 }
 
 int main() {
-    constexpr int TAMANNO_ARREGLO = 10;
+    constexpr int TAMANNO_ARREGLO = 10000;
 
-    int* arreglo = new int[TAMANNO_ARREGLO];
-    generarNumerosAleatorios(arreglo, TAMANNO_ARREGLO, 1, 100000);
+    std::vector<int> arreglo(TAMANNO_ARREGLO, 0);
+    generarNumerosAleatorios(arreglo, 1, 100000);
 
     Ordenador ordenador;
     std::cout << "-RESULTADOS DE PRUEBAS BÁSICA DE ORDENAMIENTO-" << std::endl;
-    probarOrdenamiento(ordenador, arreglo, TAMANNO_ARREGLO, &Ordenador::ordenamientoPorInsercion, "ordenamiento por inserción");
-    probarOrdenamiento(ordenador, arreglo, TAMANNO_ARREGLO, &Ordenador::ordenamientoPorSeleccion, "ordenamiento por selección");
-    probarOrdenamiento(ordenador, arreglo, TAMANNO_ARREGLO, &Ordenador::ordenamientoPorMezcla, "ordenamiento por mezcla");
+    probarOrdenamiento(ordenador, arreglo, &Ordenador::ordenamientoPorInsercion, "ordenamiento por inserción");
+    probarOrdenamiento(ordenador, arreglo, &Ordenador::ordenamientoPorSeleccion, "ordenamiento por selección");
+    probarOrdenamiento(ordenador, arreglo, &Ordenador::ordenamientoPorMezcla, "ordenamiento por mezcla");
 
     std::cout << "-RESULTADOS DE PRUEBAS DE PROGRAMACIÓN DEFENSIVA-" << std::endl;
     probarProgramacionDefensiva(ordenador, &Ordenador::ordenamientoPorInsercion, "ordenamiento por inserción");
     probarProgramacionDefensiva(ordenador, &Ordenador::ordenamientoPorSeleccion, "ordenamiento por selección");
     probarProgramacionDefensiva(ordenador, &Ordenador::ordenamientoPorMezcla, "ordenamiento por mezcla");
 
-    delete[] arreglo;
 
     return 0;
 }
