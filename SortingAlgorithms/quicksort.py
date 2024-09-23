@@ -93,7 +93,8 @@ def particionar(
     print(sangria + f"Finalizó pos {limite_elementos_menores + 1 + 1}")
     print(
         sangria
-        + f"Dejó el arreglo de trabajo como: {arreglo[indice_inicio:indice_final + 1]}"
+        + "Dejó el arreglo de trabajo como:"
+        + f"{arreglo[indice_inicio:indice_final + 1]}\n"
     )
     return limite_elementos_menores + 1
 
