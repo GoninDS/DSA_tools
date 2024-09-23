@@ -36,7 +36,7 @@ def quicksort(
     if indice_inicio < indice_final:
         print(
             sangria
-            + f"N: {nivel}, p: {indice_inicio}, r: {indice_final}\n"
+            + f"N: {nivel}, p: {indice_inicio + 1}, r: {indice_final + 1}\n"
             + sangria
             + f"El pivote es {arreglo[indice_final]}"
             + f" (pos {indice_final + 1})\n" + sangria 
