@@ -1,6 +1,4 @@
-def intercambiar(
-    arreglo: list, indice_primero: int, indice_segundo: int
-) -> None:
+def intercambiar(arreglo: list, indice_primero: int, indice_segundo: int) -> None:
     """Intercambia dos elementos en un arreglo.
 
     parametros:
@@ -33,18 +31,21 @@ def quicksort(
     - sangria: cadena de texto que se agrega al inicio de cada impresión.
       para mejorar la legibilidad de la recursión.
     """
+    print(sangria + f"N: {nivel}, p: {indice_inicio + 1}, r: {indice_final + 1}")
     if indice_inicio < indice_final:
         print(
             sangria
-            + f"N: {nivel}, p: {indice_inicio + 1}, r: {indice_final + 1}\n"
-            + sangria
             + f"El pivote es {arreglo[indice_final]}"
-            + f" (pos {indice_final + 1})\n" + sangria 
+            + f" (pos {indice_final + 1})\n"
+            + sangria
             + "trabaja sobre el Subarreglo: "
             + f"{arreglo[indice_inicio:indice_final + 1]}.",
         )
         indice_pivote = particionar(
-            arreglo, indice_inicio, indice_final, sangria
+            arreglo,
+            indice_inicio,
+            indice_final,
+            sangria,
         )
         quicksort(
             arreglo,
@@ -60,6 +61,8 @@ def quicksort(
             sangria + " " * 3,
             nivel + 1,
         )
+    else:
+        print(sangria + "Se resuelve trivialmente.\n")
 
 
 def particionar(
