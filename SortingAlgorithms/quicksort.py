@@ -7,6 +7,14 @@ def intercambiar(arreglo: list, indice_primero: int, indice_segundo: int) -> Non
     - indice_primero: índice del primer elemento a intercambiar.
     - indice_segundo: índice del segundo elemento a intercambiar.
     """
+    if (
+        arreglo is None
+        or len(arreglo) == 0
+        or indice_primero < 0
+        or indice_segundo < 0
+    ):
+        return
+
     temporal = arreglo[indice_primero]
     arreglo[indice_primero] = arreglo[indice_segundo]
     arreglo[indice_segundo] = temporal
@@ -31,6 +39,9 @@ def quicksort(
     - sangria: cadena de texto que se agrega al inicio de cada impresión.
       para mejorar la legibilidad de la recursión.
     """
+    if arreglo is None or len(arreglo) == 0 or indice_inicio < 0 or indice_final < 0:
+        return
+
     print(sangria + f"N: {nivel}, p: {indice_inicio + 1}, r: {indice_final + 1}")
     if indice_inicio < indice_final:
         print(
@@ -86,6 +97,9 @@ def particionar(
     - int: índice del pivote después de la partición.
            Equivale a q en el pseudocódigo.
     """
+    if arreglo is None or len(arreglo) == 0 or indice_inicio < 0 or indice_final < 0:
+        return -1
+
     valor_pivote = arreglo[indice_final]
     limite_elementos_menores = indice_inicio - 1
     for indice_actual in range(indice_inicio, indice_final):

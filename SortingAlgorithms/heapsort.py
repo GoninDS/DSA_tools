@@ -14,6 +14,9 @@ def es_monticulo_maximo(arreglo: list, i: int, n: int) -> bool:
     """
     # recordemos el caso base: si el nodo i es una hoja, entonces es un montículo
     # Máximo
+    if arreglo is None or len(arreglo) == 0 or i < 0 or n < 0:
+        return False
+
     if 2 * i + 2 > n:
         return True
     # ahora, verificamos si el nodo i cumple con la propiedad de montículo máximo
@@ -32,6 +35,8 @@ def es_monticulo_maximo(arreglo: list, i: int, n: int) -> bool:
 
 
 def revisar_monticulo_maximo(arreglo: list) -> None:
+    if arreglo is None or len(arreglo) == 0:
+        return
     if es_monticulo_maximo(arreglo, 0, len(arreglo)):
         print("Sí, es un montículo máximo")
     else:
@@ -89,6 +94,9 @@ def intercambiar(arreglo: list, i: int, j: int) -> None:
     - i (int): Índice del primer elemento.
     - j (int): Índice del segundo elemento.
     """
+    if arreglo is None or len(arreglo) == 0 or i < 0 or j < 0:
+        return
+
     temp = arreglo[i]
     arreglo[i] = arreglo[j]
     arreglo[j] = temp
@@ -102,6 +110,9 @@ def monticularizar(arreglo: list, n: int) -> None:
     - arreglo (list): Arreglo de elementos. A en el pseudocódigo.
     - n (int): Tamaño del arreglo.
     """
+    if arreglo is None or len(arreglo) == 0 or n < 0:
+        return
+
     tamanno_monticulo = n
     print("Arreglo original: ", arreglo)
     print()
@@ -122,6 +133,9 @@ def corregir_cima(arreglo: list, i: int, tamano_del_monticulo: int) -> None:
     - i (int): Índice del nodo raíz del subárbol.
     - tamano_del_monticulo (int): Tamaño del montículo actual.
     """
+    if arreglo is None or len(arreglo) == 0 or i < 0 or tamano_del_monticulo < 0:
+        return
+
     izquierdo = izquierda(i)
     derecho = derecha(i)
     maximo = i
@@ -150,6 +164,9 @@ def ordenamiento_por_monticulos(arreglo: list) -> list:
     --------
         list: Arreglo ordenado.
     """
+    if arreglo is None or len(arreglo) == 0:
+        return []
+
     n = len(arreglo)
     print("---Monticularizando---")
     monticularizar(arreglo, n)
